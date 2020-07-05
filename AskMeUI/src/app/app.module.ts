@@ -16,6 +16,8 @@ import { RegisterComponent } from '../app/register/register.component';
 import { AlertComponent } from '../app/_components/alert.component';
 import { SubjectCreateComponent } from '../app/subject/subject-create.component';
 import { SubjectComponent } from '../app/subject/subject.component';
+import { LessonCreateComponent } from '../app/lesson/lesson-create.component';
+import { LessonComponent } from '../app/lesson/lesson.component';
 
 @NgModule({
   imports: [
@@ -31,7 +33,9 @@ import { SubjectComponent } from '../app/subject/subject.component';
     RegisterComponent,
     AlertComponent,
     SubjectCreateComponent,
-    SubjectComponent
+    SubjectComponent,
+    LessonCreateComponent,
+    LessonComponent
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

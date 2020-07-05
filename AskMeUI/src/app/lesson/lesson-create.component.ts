@@ -3,24 +3,24 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
-import { SubjectService } from '../_services/subject.service';
+import { LessonService } from '../_services/lesson.service';
 import { AlertService } from '../_services/alert.service';
 
-@Component({ templateUrl: 'subject-create.component.html' })
-export class SubjectCreateComponent implements OnInit {
-  subjectForm: FormGroup;
+@Component({ templateUrl: 'lesson-create.component.html' })
+export class LessonCreateComponent implements OnInit {
+  lessonForm: FormGroup;
   loading = false;
   submitted = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private subjectService: SubjectService,
+    private lessonService: LessonService,
     private alertService: AlertService
   ) {}
 
   ngOnInit() {
-    this.subjectForm = this.formBuilder.group({
+    this.lessonForm = this.formBuilder.group({
       title: ['', Validators.required],
       description: ['', Validators.required]
     });
@@ -28,7 +28,7 @@ export class SubjectCreateComponent implements OnInit {
 
   // convenience getter for easy access to form fields
   get f() {
-    return this.subjectForm.controls;
+    return this.lessonForm.controls;
   }
 
   onSubmit() {
@@ -38,18 +38,18 @@ export class SubjectCreateComponent implements OnInit {
     this.alertService.clear();
 
     // stop here if form is invalid
-    if (this.subjectForm.invalid) {
+    if (this.lessonForm.invalid) {
       return;
     }
 
     this.loading = true;
-    this.subjectService
-      .createSubject(this.subjectForm.value)
+    this.lessonService
+      .createLesson(this.lessonForm.value)
       .pipe(first())
       .subscribe(
         (data) => {
-          this.alertService.success('Subject successful created', true);
-          this.router.navigate(['/subjects']);
+          this.alertService.success('Lesson successful created', true);
+          this.router.navigate(['/lessons']);
         },
         (error) => {
           this.alertService.error(error);
