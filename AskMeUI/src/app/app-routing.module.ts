@@ -6,6 +6,8 @@ import { RegisterComponent } from '../app/register/register.component';
 import { AuthGuard } from '../app/_helpers/auth.guard';
 import { SubjectCreateComponent } from './subject/subject-create.component';
 import { SubjectComponent } from './subject/subject.component';
+import { LessonCreateComponent } from './lesson/lesson-create.component';
+import { LessonComponent } from './lesson/lesson.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
@@ -19,6 +21,16 @@ const routes: Routes = [
   {
     path: 'subjects',
     component: SubjectComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'lessons/create',
+    component: LessonCreateComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'lessons',
+    component: LessonComponent,
     canActivate: [AuthGuard]
   },
 

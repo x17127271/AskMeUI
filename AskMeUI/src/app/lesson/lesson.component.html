@@ -1,0 +1,15 @@
+<div class="row">
+    <label>lesson works</label>
+</div>
+<div class="row">
+    <label>lesson works</label>
+</div>
+<ul>
+    <li *ngFor="let lesson of lessons">
+        {{lesson.title}} ({{lesson.description}})
+        -
+    </li>
+</ul>
+<div class="row">
+    <a class="btn btn-primary" [routerLink]="['create']">Create Lesson</a>
+</div>
