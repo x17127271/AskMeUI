@@ -8,6 +8,8 @@ import { SubjectCreateComponent } from './subject/subject-create.component';
 import { SubjectComponent } from './subject/subject.component';
 import { LessonCreateComponent } from './lesson/lesson-create.component';
 import { LessonComponent } from './lesson/lesson.component';
+import { SubjectDetailsComponent } from './subject/subject-details.component';
+import { LessonDetailsComponent } from './lesson/lesson-details.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
@@ -24,6 +26,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'subjects/:id',
+    component: SubjectDetailsComponent,
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'lessons/create',
     component: LessonCreateComponent,
     canActivate: [AuthGuard]
@@ -31,6 +38,11 @@ const routes: Routes = [
   {
     path: 'lessons',
     component: LessonComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'lessons/:id',
+    component: LessonDetailsComponent,
     canActivate: [AuthGuard]
   },
 

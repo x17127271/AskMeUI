@@ -7,27 +7,46 @@ import { LessonService } from '../_services/lesson.service';
 import { AlertService } from '../_services/alert.service';
 import { AuthenticationService } from '../_services/authentication.service';
 import { User } from '../_models/user';
+import { ILesson } from '../_models/lesson';
 
 @Component({ templateUrl: 'lesson.component.html' })
 export class LessonComponent implements OnInit {
   currentUser: User;
-  lessons = [];
-  constructor(
-    private authenticationService: AuthenticationService,
-    private lessonService: LessonService
-  ) {
-    // this.currentUser = this.authenticationService.currentUserValue;
+  pageTitle: string = 'Lesson List';
+
+  _listFilter: string;
+  get listFilter(): string {
+    return this._listFilter;
   }
+  set listFilter(value: string) {
+    this._listFilter = value;
+    this.filteredLessons = this.listFilter
+      ? this.performFilter(this.listFilter)
+      : this.lessons;
+  }
+
+  filteredLessons: ILesson[];
+  lessons: ILesson[];
+  errorMessage: string;
+
+  constructor(private lessonService: LessonService) {}
 
   ngOnInit() {
-    this.loadAllLessons();
+    // pass subjectId on a prope way to getlessons
+    this.lessonService.getLessons(1).subscribe({
+      next: (lessons) => {
+        this.lessons = lessons;
+        this.filteredLessons = this.lessons;
+      },
+      error: (err) => (this.errorMessage = err)
+    });
   }
 
-  private loadAllLessons() {
-    this.lessonService
-      // Get id from url
-      .getAll(1)
-      .pipe(first())
-      .subscribe((lessons) => (this.lessons = lessons));
+  performFilter(filterBy: string): ILesson[] {
+    filterBy = filterBy.toLocaleLowerCase();
+    return this.lessons.filter(
+      (lesson: ILesson) =>
+        lesson.title.toLocaleLowerCase().indexOf(filterBy) !== -1
+    );
   }
 }
