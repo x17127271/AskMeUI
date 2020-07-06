@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
-import { Lesson } from '../_models/lesson';
+import { ILesson } from '../_models/lesson';
 
 import { AuthenticationService } from '../_services/authentication.service';
+import { throwError, Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class LessonService {
@@ -13,13 +15,20 @@ export class LessonService {
   ) {}
   currentUser = this.authenticationService.currentUserValue;
   private apiBaseUrl = 'http://localhost:51044/api';
-  getAll(subjectId: number) {
-    return this.http.get<Lesson[]>(
-      `${this.apiBaseUrl}/subjects/${subjectId}/lessons`
-    );
+
+  getLessons(subjectId: number): Observable<ILesson[]> {
+    return this.http
+      .get<ILesson[]>(`${this.apiBaseUrl}/subjects/${subjectId}/lessons`)
+      .pipe(catchError(this.handleError));
   }
 
-  createLesson(lesson: Lesson) {
+  getLessonById(lessonId: number): Observable<ILesson> {
+    return this.http
+      .get<ILesson>(`${this.apiBaseUrl}/subjects/${1}/lessons/${lessonId}`)
+      .pipe(catchError(this.handleError));
+  }
+
+  createLesson(lesson: ILesson) {
     // to be changed
     lesson.subjectId = 1;
     return this.http.post(
@@ -32,5 +41,21 @@ export class LessonService {
     return this.http.delete(
       `${this.apiBaseUrl}subjects/${subjectId}/lessons/${lessonId}`
     );
+  }
+
+  private handleError(err: HttpErrorResponse) {
+    let errorMessage = '';
+    if (err.error instanceof ErrorEvent) {
+      errorMessage = 'An error ocurred: ' + err.error.message;
+    } else {
+      errorMessage =
+        'Server returned code: ' +
+        err.status +
+        ', error message is: ' +
+        err.message;
+    }
+    console.error(errorMessage);
+
+    return throwError(errorMessage);
   }
 }

@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
-import { Subject } from '../_models/subject';
+import { ISubject } from '../_models/subject';
 
 import { AuthenticationService } from '../_services/authentication.service';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class SubjectService {
@@ -11,15 +13,27 @@ export class SubjectService {
     private http: HttpClient,
     private authenticationService: AuthenticationService
   ) {}
+
   currentUser = this.authenticationService.currentUserValue;
   private apiBaseUrl = 'http://localhost:51044/api';
-  getAll() {
-    return this.http.get<Subject[]>(
-      `${this.apiBaseUrl}/users/${this.currentUser.id}/subjects`
-    );
+
+  getSubjects(): Observable<ISubject[]> {
+    return this.http
+      .get<ISubject[]>(
+        `${this.apiBaseUrl}/users/${this.currentUser.id}/subjects`
+      )
+      .pipe(catchError(this.handleError));
   }
 
-  createSubject(subject: Subject) {
+  getSubjectById(subjectId: number): Observable<ISubject> {
+    return this.http
+      .get<ISubject>(
+        `${this.apiBaseUrl}/users/${this.currentUser.id}/subjects/${subjectId}`
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  createSubject(subject: ISubject) {
     subject.userId = this.currentUser.id;
     return this.http.post(
       `${this.apiBaseUrl}/users/${this.currentUser.id}/subjects`,
@@ -29,5 +43,21 @@ export class SubjectService {
 
   delete(id: number) {
     return this.http.delete(`${this.apiBaseUrl}/subjects/${id}`);
+  }
+
+  private handleError(err: HttpErrorResponse) {
+    let errorMessage = '';
+    if (err.error instanceof ErrorEvent) {
+      errorMessage = 'An error ocurred: ' + err.error.message;
+    } else {
+      errorMessage =
+        'Server returned code: ' +
+        err.status +
+        ', error message is: ' +
+        err.message;
+    }
+    console.error(errorMessage);
+
+    return throwError(errorMessage);
   }
 }
