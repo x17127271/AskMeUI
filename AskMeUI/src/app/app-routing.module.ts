@@ -10,6 +10,8 @@ import { LessonCreateComponent } from './lesson/lesson-create.component';
 import { LessonComponent } from './lesson/lesson.component';
 import { SubjectDetailsComponent } from './subject/subject-details.component';
 import { LessonDetailsComponent } from './lesson/lesson-details.component';
+import { QuestionCreateComponent } from './question/question-create.component';
+import { QuestionComponent } from './question/question.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
@@ -43,6 +45,16 @@ const routes: Routes = [
   {
     path: 'lessons/:id',
     component: LessonDetailsComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'questions/create',
+    component: QuestionCreateComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'questions',
+    component: QuestionComponent,
     canActivate: [AuthGuard]
   },
 
