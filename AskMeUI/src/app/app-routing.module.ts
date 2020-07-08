@@ -12,6 +12,7 @@ import { SubjectDetailsComponent } from './subject/subject-details.component';
 import { LessonDetailsComponent } from './lesson/lesson-details.component';
 import { QuestionCreateComponent } from './question/question-create.component';
 import { QuestionComponent } from './question/question.component';
+import { QuestionDetailsComponent } from './question/question-details.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
@@ -55,6 +56,11 @@ const routes: Routes = [
   {
     path: 'questions',
     component: QuestionComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'questions/:id',
+    component: QuestionDetailsComponent,
     canActivate: [AuthGuard]
   },
 

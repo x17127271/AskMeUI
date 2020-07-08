@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ISubject } from '../_models/subject';
-import { SubjectService } from '../_services/subject.service';
 import { ILesson } from '../_models/lesson';
 import { LessonService } from '../_services/lesson.service';
 

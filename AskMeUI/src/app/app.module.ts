@@ -19,6 +19,9 @@ import { LessonComponent } from '../app/lesson/lesson.component';
 import { LessonDetailsComponent } from '../app/lesson/lesson-details.component';
 import { QuestionCreateComponent } from '../app/question/question-create.component';
 import { QuestionComponent } from '../app/question/question.component';
+import { QuestionDetailsComponent } from '../app/question/question-details.component';
+import { AnswerComponent } from '../app/answer/answer.component';
+import { AnswerCreateComponent } from '../app/answer/answer-create.component';
 
 @NgModule({
   imports: [
@@ -41,7 +44,10 @@ import { QuestionComponent } from '../app/question/question.component';
     LessonComponent,
     LessonDetailsComponent,
     QuestionCreateComponent,
-    QuestionComponent
+    QuestionComponent,
+    QuestionDetailsComponent,
+    AnswerComponent,
+    AnswerCreateComponent
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
