@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
-import { IQuestion } from '../_models/question';
+import { IAnswer } from '../_models/answer';
 
 import { AuthenticationService } from '../_services/authentication.service';
 import { throwError, Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
-export class QuestionService {
+export class AnswerService {
   constructor(
     private http: HttpClient,
     private authenticationService: AuthenticationService
@@ -16,30 +16,31 @@ export class QuestionService {
   currentUser = this.authenticationService.currentUserValue;
   private apiBaseUrl = 'http://localhost:51044/api';
 
-  getQuestions(lessonId: number): Observable<IQuestion[]> {
+  getAnswers(questionId: number): Observable<IAnswer[]> {
     return this.http
-      .get<IQuestion[]>(`${this.apiBaseUrl}/lessons/${lessonId}/questions`)
+      .get<IAnswer[]>(`${this.apiBaseUrl}/questions/${questionId}/answers`)
       .pipe(catchError(this.handleError));
   }
 
-  getQuestionById(questionId: number): Observable<IQuestion> {
+  getAnswerById(answerId: number): Observable<IAnswer> {
     return this.http
-      .get<IQuestion>(`${this.apiBaseUrl}/lessons/${1}/questions/${questionId}`)
+      .get<IAnswer>(`${this.apiBaseUrl}/questions/${1}/answers/${answerId}`)
       .pipe(catchError(this.handleError));
   }
 
-  createQuestion(question: IQuestion) {
+  createAnswer(answer: IAnswer) {
     // to be changed
-    question.lessonId = 1;
+    answer.questionId = 1;
+    answer.isAccepted = false;
     return this.http.post(
-      `${this.apiBaseUrl}/lessons/${question.lessonId}/questions`,
-      question
+      `${this.apiBaseUrl}/questions/${answer.questionId}/answers`,
+      answer
     );
   }
 
-  delete(questionId: number, lessonId: number) {
+  delete(answerId: number, questionId: number) {
     return this.http.delete(
-      `${this.apiBaseUrl}lessons/${lessonId}/questions/${questionId}`
+      `${this.apiBaseUrl}/questions/${questionId}/answers/${answerId}`
     );
   }
 
