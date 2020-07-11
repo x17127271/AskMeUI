@@ -6,21 +6,20 @@
 </div>
 <div class="row justify-content-center mt-3">
     <div class="col-8">
-        <ng-container *ngIf="subject">
+        <ng-container *ngIf="exam">
             <div class="form-group">
-                <label for="title">Subject Title</label>
-                <input type="text" class="form-control" id="title" [(ngModel)]="subject.title" readonly>
+                <label for="title">Exam Title</label>
+                <input type="text" class="form-control" id="title" [(ngModel)]="exam.title" readonly>
             </div>
             <div class="form-group">
-                <label for="description">Subject Description</label>
-                <input type="description" class="form-control" id="description" [(ngModel)]="subject.description"
-                    readonly>
+                <label for="description">Exam Description</label>
+                <input type="description" class="form-control" id="description" [(ngModel)]="exam.description" readonly>
             </div>
         </ng-container>
     </div>
 </div>
 <div class="row justify-content-center mt-3 mb-3">
     <div class="col-8 mt-3">
-        <a [routerLink]="['/subjects']" class="btn btn-primary float-right">Cancel</a>
+        <a [routerLink]="['/exams']" class="btn btn-primary float-right">Cancel</a>
     </div>
 </div>

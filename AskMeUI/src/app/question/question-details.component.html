@@ -1,34 +1,23 @@
 <div class="row">
     <div
         class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Dashboard</h1>
+        <h1 class="h2">{{pageTitle}}</h1>
     </div>
 </div>
-<div class="row justify-content-center">
-    <div class="col">
-        <div class="card" *ngIf="question">
-            <div class="card-header">
-                {{ pageTitle }}
+<div class="row justify-content-center mt-3">
+    <div class="col-8">
+        <ng-container *ngIf="question">
+            <div class="form-group">
+                <label for="title">Question Title</label>
+                <input type="text" class="form-control" id="title" [(ngModel)]="question.title" readonly>
             </div>
-            <div class="card-body">
-                <div>
-                    <div>
-                        <label>Title: </label>
-                        <label>{{ question.title }}</label>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </ng-container>
     </div>
 </div>
-
-<div class="row">
-    <app-answer-list></app-answer-list>
-</div>
-<div class="row">
-    <app-answer-create></app-answer-create>
-</div>
-
-<div class="row">
-    <a [routerLink]="['/questions']" class="btn btn-primary">Cancel</a>
+<app-answer-list [questionId]="questionId"></app-answer-list>
+<app-answer-create [questionId]="questionId"></app-answer-create>
+<div class="row justify-content-center mt-3 mb-3">
+    <div class="col-8 mt-3">
+        <a [routerLink]="['/questions']" class="btn btn-primary float-right">Cancel</a>
+    </div>
 </div>

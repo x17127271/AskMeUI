@@ -29,8 +29,6 @@ export class LessonService {
   }
 
   createLesson(lesson: ILesson) {
-    // to be changed
-    lesson.subjectId = 1;
     return this.http.post(
       `${this.apiBaseUrl}/subjects/${lesson.subjectId}/lessons`,
       lesson

@@ -13,6 +13,10 @@ import { LessonDetailsComponent } from './lesson/lesson-details.component';
 import { QuestionCreateComponent } from './question/question-create.component';
 import { QuestionComponent } from './question/question.component';
 import { QuestionDetailsComponent } from './question/question-details.component';
+import { ExamComponent } from './exam/exam.component';
+import { ExamCreateComponent } from './exam/exam-create.component';
+import { ExamDetailsComponent } from './exam/exam-details.component';
+import { ExamShowComponent } from './exam/exam-show.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
@@ -61,6 +65,26 @@ const routes: Routes = [
   {
     path: 'questions/:id',
     component: QuestionDetailsComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'exams',
+    component: ExamComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'exams/create',
+    component: ExamCreateComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'exams/:id',
+    component: ExamDetailsComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'exams/:id/show',
+    component: ExamShowComponent,
     canActivate: [AuthGuard]
   },
 

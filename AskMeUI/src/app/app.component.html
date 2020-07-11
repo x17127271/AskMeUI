@@ -19,14 +19,13 @@
           <li class="nav-item"><a class="nav-link" [routerLink]="['/subjects']">Subjects</a></li>
           <li class="nav-item"><a class="nav-link" [routerLink]="['/lessons']">Lessons</a></li>
           <li class="nav-item"><a class="nav-link" [routerLink]="['/questions']">Questions</a></li>
+          <li class="nav-item"><a class="nav-link" [routerLink]="['/exams']">Exams</a></li>
         </ul>
       </div>
     </nav>
     <main class="col-md-9 ml-sm-auto col-lg-10 px-4" role="main">
       <!-- Content -->
-      <div class="row">
-        <router-outlet></router-outlet>
-      </div>
+      <router-outlet></router-outlet>
       <!-- End Content -->
     </main>
   </div>

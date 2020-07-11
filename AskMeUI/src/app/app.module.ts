@@ -22,6 +22,10 @@ import { QuestionComponent } from '../app/question/question.component';
 import { QuestionDetailsComponent } from '../app/question/question-details.component';
 import { AnswerComponent } from '../app/answer/answer.component';
 import { AnswerCreateComponent } from '../app/answer/answer-create.component';
+import { ExamComponent } from '../app/exam/exam.component';
+import { ExamCreateComponent } from '../app/exam/exam-create.component';
+import { ExamDetailsComponent } from '../app/exam/exam-details.component';
+import { ExamShowComponent } from '../app/exam/exam-show.component';
 
 @NgModule({
   imports: [
@@ -47,7 +51,11 @@ import { AnswerCreateComponent } from '../app/answer/answer-create.component';
     QuestionComponent,
     QuestionDetailsComponent,
     AnswerComponent,
-    AnswerCreateComponent
+    AnswerCreateComponent,
+    ExamComponent,
+    ExamCreateComponent,
+    ExamDetailsComponent,
+    ExamShowComponent
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

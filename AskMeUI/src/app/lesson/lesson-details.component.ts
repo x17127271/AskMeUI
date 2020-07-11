@@ -7,7 +7,7 @@ import { LessonService } from '../_services/lesson.service';
   templateUrl: './lesson-details.component.html'
 })
 export class LessonDetailsComponent implements OnInit {
-  pageTitle: string = 'Lesson Details';
+  pageTitle = 'Lesson Details';
   lesson: ILesson;
   errorMessage: string;
 

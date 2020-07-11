@@ -11,8 +11,8 @@
                 [(ngModel)]='listFilter' />
         </div>
         <div class="table-responsive table-sm table-striped table-hover mt-1">
-            <table class="table table-bordered" *ngIf="lessons && lessons.length">
-                <caption>List of Lessons</caption>
+            <table class="table table-bordered" *ngIf="exams && exams.length">
+                <caption>List of Exams</caption>
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col">Title</th>
@@ -21,10 +21,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let lesson of filteredLessons">
-                        <td>{{lesson.title | uppercase}}</td>
-                        <td>{{lesson.description}}</td>
-                        <td><a [routerLink]="['/lessons', lesson.id]" class="btn btn-outline-primary btn-sm">Details</a>
+                    <tr *ngFor="let exam of filteredExams">
+                        <td>{{exam.title | uppercase}}</td>
+                        <td>{{exam.description}}</td>
+                        <td>
+                            <a [routerLink]="['/exams', exam.id]" class="btn btn-outline-primary btn-sm">Details</a>
+                            <a [routerLink]="['/exams', exam.id,'show']"
+                                class="btn btn-outline-primary btn-sm ml-1">Show</a>
                         </td>
                     </tr>
                 </tbody>
@@ -34,6 +37,6 @@
 </div>
 <div class="row justify-content-center mt-3 mb-3">
     <div class="col-8 mt-3">
-        <a class="btn btn-primary" [routerLink]="['create']">Create Lesson</a>
+        <a class="btn btn-primary" [routerLink]="['create']">Create Exam</a>
     </div>
 </div>

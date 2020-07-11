@@ -29,9 +29,6 @@ export class AnswerService {
   }
 
   createAnswer(answer: IAnswer) {
-    // to be changed
-    answer.questionId = 1;
-    answer.isAccepted = false;
     return this.http.post(
       `${this.apiBaseUrl}/questions/${answer.questionId}/answers`,
       answer

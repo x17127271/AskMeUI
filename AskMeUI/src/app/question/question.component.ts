@@ -4,7 +4,7 @@ import { IQuestion } from '../_models/question';
 
 @Component({ templateUrl: 'question.component.html' })
 export class QuestionComponent implements OnInit {
-  pageTitle: string = 'Question List';
+  pageTitle: string = 'Questions';
 
   _listFilter: string;
   get listFilter(): string {
