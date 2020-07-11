@@ -1,24 +1,26 @@
 <div class="row">
     <div
         class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Dashboard</h1>
+        <h1 class="h2">{{pageTitle}}</h1>
     </div>
 </div>
-<div class="row justify-content-center">
-    <div class="col">
-        <div class="card" *ngIf="lesson">
-            <div class="card-header">
-                {{ pageTitle + ': ' + lesson.title }}
+<div class="row justify-content-center mt-3">
+    <div class="col-8">
+        <ng-container *ngIf="lesson">
+            <div class="form-group">
+                <label for="title">Lesson Title</label>
+                <input type="text" class="form-control" id="title" [(ngModel)]="lesson.title" readonly>
             </div>
-            <div class="card-body">
-                <div>
-                    <label>Description: </label>
-                    <label>{{ lesson.description | uppercase}}</label>
-                </div>
+            <div class="form-group">
+                <label for="description">Lesson Description</label>
+                <input type="description" class="form-control" id="description" [(ngModel)]="lesson.description"
+                    readonly>
             </div>
-        </div>
+        </ng-container>
     </div>
 </div>
-<div class="row">
-    <a [routerLink]="['/lessons']" class="btn btn-primary">Cancel</a>
+<div class="row justify-content-center mt-3 mb-3">
+    <div class="col-8 mt-3">
+        <a [routerLink]="['/lessons']" class="btn btn-primary float-right">Cancel</a>
+    </div>
 </div>

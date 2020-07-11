@@ -7,20 +7,20 @@ import { QuestionService } from '../_services/question.service';
   templateUrl: './question-details.component.html'
 })
 export class QuestionDetailsComponent implements OnInit {
-  pageTitle: string = 'Question Details';
+  pageTitle = 'Question Details';
   question: IQuestion;
   errorMessage: string;
+  questionId: number;
 
   constructor(
     private route: ActivatedRoute,
     private questionService: QuestionService
-  ) {}
+  ) {
+    this.questionId = +this.route.snapshot.paramMap.get('id');
+  }
 
   ngOnInit(): void {
-    // + to cast to number
-    const id = this.route.snapshot.paramMap.get('id');
-    // change this calling service
-    this.questionService.getQuestionById(+id).subscribe({
+    this.questionService.getQuestionById(this.questionId).subscribe({
       next: (question) => {
         this.question = question;
       },

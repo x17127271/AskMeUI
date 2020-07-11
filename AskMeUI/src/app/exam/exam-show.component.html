@@ -1,0 +1,31 @@
+<div class="row">
+    <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Dashboard</h1>
+    </div>
+</div>
+<div class="row">
+    <button class="btn btn-primary" (click)="getQuestions()">show exam</button>
+</div>
+<div class="row" *ngIf="examDetails">
+    <div class="col">
+        <label>{{examDetails.title}}</label>
+    </div>
+    <div class="w-100"></div>
+    <div class="col">
+        <label>{{examDetails.description}}</label>
+    </div>
+</div>
+<ng-container *ngIf="questionsExam && questionsExam.length">
+    <div class="row" *ngFor="let question of questionsExam">
+        <div class="col">
+            <label>{{question.title}}</label>
+        </div>
+        <div class="w-100"></div>
+        <ng-container *ngIf="question.answers && question.answers.length">
+            <div class="col" *ngFor="let answer of question.answers">
+                <label>{{answer.title}}</label>
+            </div>
+        </ng-container>
+    </div>
+</ng-container>

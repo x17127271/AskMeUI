@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { AnswerService } from '../_services/answer.service';
 import { IAnswer } from '../_models/answer';
 
@@ -7,7 +7,7 @@ import { IAnswer } from '../_models/answer';
   templateUrl: 'answer.component.html'
 })
 export class AnswerComponent implements OnInit {
-  pageTitle: string = 'Answer List';
+  pageTitle = 'Answers';
 
   _listFilter: string;
   get listFilter(): string {
@@ -20,6 +20,7 @@ export class AnswerComponent implements OnInit {
       : this.answers;
   }
 
+  @Input() questionId: number;
   filteredAnswers: IAnswer[];
   answers: IAnswer[];
   errorMessage: string;
@@ -28,7 +29,7 @@ export class AnswerComponent implements OnInit {
 
   ngOnInit() {
     // pass questionId on a prope way to getanswers
-    this.answerService.getAnswers(1).subscribe({
+    this.answerService.getAnswers(this.questionId).subscribe({
       next: (answers) => {
         this.answers = answers;
         this.filteredAnswers = this.answers;

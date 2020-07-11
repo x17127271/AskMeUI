@@ -1,43 +1,49 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-
-import { IQuestion } from '../_models/question';
-
-import { AuthenticationService } from '../_services/authentication.service';
+import { IExam } from '../_models/exam';
 import { throwError, Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
-export class QuestionService {
-  constructor(
-    private http: HttpClient,
-    private authenticationService: AuthenticationService
-  ) {}
-  currentUser = this.authenticationService.currentUserValue;
+export class ExamService {
+  constructor(private http: HttpClient) {}
+
   private apiBaseUrl = 'http://localhost:51044/api';
 
-  getQuestions(lessonId: number): Observable<IQuestion[]> {
+  getExams(userId: number): Observable<IExam[]> {
     return this.http
-      .get<IQuestion[]>(`${this.apiBaseUrl}/lessons/${lessonId}/questions`)
+      .get<IExam[]>(`${this.apiBaseUrl}/users/${userId}/exams`)
       .pipe(catchError(this.handleError));
   }
 
-  getQuestionById(questionId: number): Observable<IQuestion> {
+  getExamById(examId: number): Observable<IExam> {
     return this.http
-      .get<IQuestion>(`${this.apiBaseUrl}/lessons/${1}/questions/${questionId}`)
+      .get<IExam>(`${this.apiBaseUrl}/users/${1}/exams/${examId}`)
       .pipe(catchError(this.handleError));
   }
 
-  createQuestion(question: IQuestion) {
+  getExamQuestions(userId: number): Observable<any> {
+    const examId = 1;
+    return this.http
+      .get<any[]>(
+        `${this.apiBaseUrl}/users/${userId}/exams/${examId}/questions`
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  createExamQuestions(exam: IExam) {
+    // to be changed
+    exam.userId = 1;
+    exam.questions = [1, 2, 3];
     return this.http.post(
-      `${this.apiBaseUrl}/lessons/${question.lessonId}/questions`,
-      question
+      `${this.apiBaseUrl}/users/${exam.userId}/exams`,
+      exam
     );
   }
 
-  delete(questionId: number, lessonId: number) {
+  delete(examId: number, userId: number) {
     return this.http.delete(
-      `${this.apiBaseUrl}lessons/${lessonId}/questions/${questionId}`
+      `${this.apiBaseUrl}/users/${userId}/exams/${examId}`
     );
   }
 

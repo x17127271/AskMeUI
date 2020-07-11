@@ -4,7 +4,7 @@ import { ILesson } from '../_models/lesson';
 
 @Component({ templateUrl: 'lesson.component.html' })
 export class LessonComponent implements OnInit {
-  pageTitle: string = 'Lesson List';
+  pageTitle: string = 'Lessons';
 
   _listFilter: string;
   get listFilter(): string {
