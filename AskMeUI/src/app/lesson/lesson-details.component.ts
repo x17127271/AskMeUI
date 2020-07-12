@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ILesson } from '../_models/lesson';
 import { LessonService } from '../_services/lesson.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   templateUrl: './lesson-details.component.html'
 })
-export class LessonDetailsComponent implements OnInit {
+export class LessonDetailsComponent implements OnInit, OnDestroy {
   pageTitle = 'Lesson Details';
   lesson: ILesson;
   errorMessage: string;
+  private subscription: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -20,11 +22,17 @@ export class LessonDetailsComponent implements OnInit {
     // + to cast to number
     const id = this.route.snapshot.paramMap.get('id');
     // change this calling service
-    this.lessonService.getLessonById(+id).subscribe({
+    this.subscription = this.lessonService.getLessonById(+id).subscribe({
       next: (lesson) => {
         this.lesson = lesson;
       },
       error: (err) => (this.errorMessage = err)
     });
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }

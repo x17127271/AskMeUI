@@ -1,21 +1,23 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { AnswerService } from '../_services/answer.service';
 import { AlertService } from '../_services/alert.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-answer-create',
   templateUrl: 'answer-create.component.html'
 })
-export class AnswerCreateComponent implements OnInit {
+export class AnswerCreateComponent implements OnInit, OnDestroy {
   pageTitle = 'Create a new Answer';
   answerForm: FormGroup;
   loading = false;
   submitted = false;
   @Input() questionId: number;
+  private subscription: Subscription;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -49,7 +51,7 @@ export class AnswerCreateComponent implements OnInit {
     }
 
     this.loading = true;
-    this.answerService
+    this.subscription = this.answerService
       .createAnswer(this.answerForm.value)
       .pipe(first())
       .subscribe(
@@ -63,5 +65,11 @@ export class AnswerCreateComponent implements OnInit {
           this.loading = false;
         }
       );
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }

@@ -2,48 +2,51 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { IExam } from '../_models/exam';
 import { throwError, Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, retry } from 'rxjs/operators';
+import { AuthenticationService } from './authentication.service';
 
 @Injectable({ providedIn: 'root' })
 export class ExamService {
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private authenticationService: AuthenticationService
+  ) {}
 
   private apiBaseUrl = 'http://localhost:51044/api';
+  currentUser = this.authenticationService.currentUserValue;
 
-  getExams(userId: number): Observable<IExam[]> {
+  getExams(): Observable<IExam[]> {
     return this.http
-      .get<IExam[]>(`${this.apiBaseUrl}/users/${userId}/exams`)
-      .pipe(catchError(this.handleError));
+      .get<IExam[]>(`${this.apiBaseUrl}/users/${this.currentUser.id}/exams`)
+      .pipe(retry(1), catchError(this.handleError));
   }
 
   getExamById(examId: number): Observable<IExam> {
     return this.http
-      .get<IExam>(`${this.apiBaseUrl}/users/${1}/exams/${examId}`)
-      .pipe(catchError(this.handleError));
+      .get<IExam>(
+        `${this.apiBaseUrl}/users/${this.currentUser.id}/exams/${examId}`
+      )
+      .pipe(retry(1), catchError(this.handleError));
   }
 
-  getExamQuestions(userId: number): Observable<any> {
-    const examId = 1;
+  getExamQuestions(examId: number): Observable<any> {
     return this.http
       .get<any[]>(
-        `${this.apiBaseUrl}/users/${userId}/exams/${examId}/questions`
+        `${this.apiBaseUrl}/users/${this.currentUser.id}/exams/${examId}/questions`
       )
-      .pipe(catchError(this.handleError));
+      .pipe(retry(1), catchError(this.handleError));
   }
 
   createExamQuestions(exam: IExam) {
-    // to be changed
-    exam.userId = 1;
-    exam.questions = [1, 2, 3];
-    return this.http.post(
-      `${this.apiBaseUrl}/users/${exam.userId}/exams`,
-      exam
-    );
+    exam.userId = this.currentUser.id;
+    return this.http
+      .post(`${this.apiBaseUrl}/users/${exam.userId}/exams`, exam)
+      .pipe(retry(1), catchError(this.handleError));
   }
 
-  delete(examId: number, userId: number) {
+  delete(examId: number) {
     return this.http.delete(
-      `${this.apiBaseUrl}/users/${userId}/exams/${examId}`
+      `${this.apiBaseUrl}/users/${this.currentUser.id}/exams/${examId}`
     );
   }
 

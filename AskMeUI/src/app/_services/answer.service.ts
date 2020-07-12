@@ -5,7 +5,7 @@ import { IAnswer } from '../_models/answer';
 
 import { AuthenticationService } from '../_services/authentication.service';
 import { throwError, Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, retry } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AnswerService {
@@ -19,20 +19,19 @@ export class AnswerService {
   getAnswers(questionId: number): Observable<IAnswer[]> {
     return this.http
       .get<IAnswer[]>(`${this.apiBaseUrl}/questions/${questionId}/answers`)
-      .pipe(catchError(this.handleError));
+      .pipe(retry(1), catchError(this.handleError));
   }
 
   getAnswerById(answerId: number): Observable<IAnswer> {
     return this.http
       .get<IAnswer>(`${this.apiBaseUrl}/questions/${1}/answers/${answerId}`)
-      .pipe(catchError(this.handleError));
+      .pipe(retry(1), catchError(this.handleError));
   }
 
   createAnswer(answer: IAnswer) {
-    return this.http.post(
-      `${this.apiBaseUrl}/questions/${answer.questionId}/answers`,
-      answer
-    );
+    return this.http
+      .post(`${this.apiBaseUrl}/questions/${answer.questionId}/answers`, answer)
+      .pipe(retry(1), catchError(this.handleError));
   }
 
   delete(answerId: number, questionId: number) {

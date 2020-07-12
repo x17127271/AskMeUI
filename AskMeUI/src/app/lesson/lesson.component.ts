@@ -1,12 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LessonService } from '../_services/lesson.service';
 import { ILesson } from '../_models/lesson';
+import { Subscription } from 'rxjs';
+import { ISubject } from '../_models/subject';
+import { SubjectService } from '../_services/subject.service';
 
 @Component({ templateUrl: 'lesson.component.html' })
-export class LessonComponent implements OnInit {
-  pageTitle: string = 'Lessons';
-
+export class LessonComponent implements OnInit, OnDestroy {
+  pageTitle = 'Lessons';
+  private subscription: Subscription;
+  filteredLessons: ILesson[];
+  lessons: ILesson[];
+  errorMessage: string;
   _listFilter: string;
+  subjects: ISubject[];
+  private subscriptionSub: Subscription;
+
   get listFilter(): string {
     return this._listFilter;
   }
@@ -17,21 +26,34 @@ export class LessonComponent implements OnInit {
       : this.lessons;
   }
 
-  filteredLessons: ILesson[];
-  lessons: ILesson[];
-  errorMessage: string;
-
-  constructor(private lessonService: LessonService) {}
+  constructor(
+    private lessonService: LessonService,
+    private subjectService: SubjectService
+  ) {}
 
   ngOnInit() {
-    // pass subjectId on a prope way to getlessons
-    this.lessonService.getLessons(1).subscribe({
-      next: (lessons) => {
-        this.lessons = lessons;
-        this.filteredLessons = this.lessons;
-      },
-      error: (err) => (this.errorMessage = err)
-    });
+    this.getSubsjects();
+  }
+
+  loadLessons(event: any) {
+    const subjectId = event.target.value;
+    if (subjectId && subjectId > 0) {
+      this.subscription = this.lessonService.getLessons(subjectId).subscribe({
+        next: (lessons) => {
+          this.lessons = lessons;
+          this.filteredLessons = this.lessons;
+        },
+        error: (err) => (this.errorMessage = err)
+      });
+    }
+  }
+
+  getSubsjects() {
+    this.subscriptionSub = this.subjectService
+      .getSubjects()
+      .subscribe((data) => {
+        this.subjects = data;
+      });
   }
 
   performFilter(filterBy: string): ILesson[] {
@@ -40,5 +62,14 @@ export class LessonComponent implements OnInit {
       (lesson: ILesson) =>
         lesson.title.toLocaleLowerCase().indexOf(filterBy) !== -1
     );
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+    if (this.subscriptionSub) {
+      this.subscriptionSub.unsubscribe();
+    }
   }
 }

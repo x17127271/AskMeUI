@@ -1,10 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { QuestionService } from '../_services/question.service';
 import { IQuestion } from '../_models/question';
+import { Subscription } from 'rxjs';
+import { ISubject } from '../_models/subject';
+import { ILesson } from '../_models/lesson';
+import { LessonService } from '../_services/lesson.service';
+import { SubjectService } from '../_services/subject.service';
 
 @Component({ templateUrl: 'question.component.html' })
-export class QuestionComponent implements OnInit {
-  pageTitle: string = 'Questions';
+export class QuestionComponent implements OnInit, OnDestroy {
+  pageTitle = 'Questions';
+  private subscription: Subscription;
+  private subscriptonLes: Subscription;
+  private subscriptionSub: Subscription;
 
   _listFilter: string;
   get listFilter(): string {
@@ -20,18 +28,48 @@ export class QuestionComponent implements OnInit {
   filteredQuestions: IQuestion[];
   questions: IQuestion[];
   errorMessage: string;
+  subjects: ISubject[];
+  lessons: ILesson[];
+  selectedSubject: number;
 
-  constructor(private questionService: QuestionService) {}
+  constructor(
+    private questionService: QuestionService,
+    private lessonService: LessonService,
+    private subjectService: SubjectService
+  ) {}
 
   ngOnInit() {
-    // pass lessonId on a prope way to getquestions
-    this.questionService.getQuestions(1).subscribe({
-      next: (questions) => {
-        this.questions = questions;
-        this.filteredQuestions = this.questions;
-      },
-      error: (err) => (this.errorMessage = err)
-    });
+    this.subscriptionSub = this.subjectService
+      .getSubjects()
+      .subscribe((data) => {
+        this.subjects = data;
+      });
+  }
+
+  loadLessons(event: any) {
+    this.selectedSubject = event.target.value;
+    if (this.selectedSubject && this.selectedSubject > 0) {
+      this.subscriptonLes = this.lessonService
+        .getLessons(this.selectedSubject)
+        .subscribe((data) => {
+          this.lessons = data;
+        });
+    }
+  }
+
+  loadQuestions(event: any) {
+    const lessonId = event.target.value;
+    if (lessonId && lessonId > 0) {
+      this.subscription = this.questionService
+        .getQuestions(lessonId)
+        .subscribe({
+          next: (questions) => {
+            this.questions = questions;
+            this.filteredQuestions = this.questions;
+          },
+          error: (err) => (this.errorMessage = err)
+        });
+    }
   }
 
   performFilter(filterBy: string): IQuestion[] {
@@ -40,5 +78,17 @@ export class QuestionComponent implements OnInit {
       (question: IQuestion) =>
         question.title.toLocaleLowerCase().indexOf(filterBy) !== -1
     );
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+    if (this.subscriptionSub) {
+      this.subscriptionSub.unsubscribe();
+    }
+    if (this.subscriptonLes) {
+      this.subscriptonLes.unsubscribe();
+    }
   }
 }

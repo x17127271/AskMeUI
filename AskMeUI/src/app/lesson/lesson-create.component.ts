@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
@@ -7,14 +7,17 @@ import { LessonService } from '../_services/lesson.service';
 import { AlertService } from '../_services/alert.service';
 import { SubjectService } from '../_services/subject.service';
 import { ISubject } from '../_models/subject';
+import { Subscription } from 'rxjs';
 
 @Component({ templateUrl: 'lesson-create.component.html' })
-export class LessonCreateComponent implements OnInit {
+export class LessonCreateComponent implements OnInit, OnDestroy {
   pageTitle = 'Create Lesson';
   lessonForm: FormGroup;
   loading = false;
   submitted = false;
   subjects: ISubject[];
+  private subscription: Subscription;
+  private subscriptionSub: Subscription;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -40,9 +43,11 @@ export class LessonCreateComponent implements OnInit {
   }
 
   getSubjects(): void {
-    this.subjectService.getSubjects().subscribe((data) => {
-      this.subjects = data;
-    });
+    this.subscriptionSub = this.subjectService
+      .getSubjects()
+      .subscribe((data) => {
+        this.subjects = data;
+      });
   }
 
   onSubmit(): void {
@@ -57,7 +62,7 @@ export class LessonCreateComponent implements OnInit {
     }
 
     this.loading = true;
-    this.lessonService
+    this.subscription = this.lessonService
       .createLesson(this.lessonForm.value)
       .pipe(first())
       .subscribe(
@@ -70,5 +75,14 @@ export class LessonCreateComponent implements OnInit {
           this.loading = false;
         }
       );
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+    if (this.subscriptionSub) {
+      this.subscriptionSub.unsubscribe();
+    }
   }
 }

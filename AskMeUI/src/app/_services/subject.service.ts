@@ -5,7 +5,7 @@ import { ISubject } from '../_models/subject';
 
 import { AuthenticationService } from '../_services/authentication.service';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, retry } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class SubjectService {
@@ -22,7 +22,7 @@ export class SubjectService {
       .get<ISubject[]>(
         `${this.apiBaseUrl}/users/${this.currentUser.id}/subjects`
       )
-      .pipe(catchError(this.handleError));
+      .pipe(retry(1), catchError(this.handleError));
   }
 
   getSubjectById(subjectId: number): Observable<ISubject> {
@@ -30,15 +30,14 @@ export class SubjectService {
       .get<ISubject>(
         `${this.apiBaseUrl}/users/${this.currentUser.id}/subjects/${subjectId}`
       )
-      .pipe(catchError(this.handleError));
+      .pipe(retry(1), catchError(this.handleError));
   }
 
   createSubject(subject: ISubject) {
     subject.userId = this.currentUser.id;
-    return this.http.post(
-      `${this.apiBaseUrl}/users/${this.currentUser.id}/subjects`,
-      subject
-    );
+    return this.http
+      .post(`${this.apiBaseUrl}/users/${this.currentUser.id}/subjects`, subject)
+      .pipe(retry(1), catchError(this.handleError));
   }
 
   delete(id: number) {

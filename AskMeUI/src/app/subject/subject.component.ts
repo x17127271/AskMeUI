@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubjectService } from '../_services/subject.service';
 import { AlertService } from '../_services/alert.service';
 import { ISubject } from '../_models/subject';
+import { Subscription } from 'rxjs';
 
 @Component({ templateUrl: 'subject.component.html' })
-export class SubjectComponent implements OnInit {
-  // subjects = [];
-  pageTitle: string = 'Subjects';
+export class SubjectComponent implements OnInit, OnDestroy {
+  pageTitle = 'Subjects';
 
   _listFilter: string;
   get listFilter(): string {
@@ -22,11 +22,12 @@ export class SubjectComponent implements OnInit {
   filteredSubjects: ISubject[];
   subjects: ISubject[];
   errorMessage: string;
+  private subscription: Subscription;
 
   constructor(private subjectService: SubjectService) {}
 
   ngOnInit(): void {
-    this.subjectService.getSubjects().subscribe({
+    this.subscription = this.subjectService.getSubjects().subscribe({
       next: (subjects) => {
         this.subjects = subjects;
         this.filteredSubjects = this.subjects;
@@ -41,5 +42,11 @@ export class SubjectComponent implements OnInit {
       (subject: ISubject) =>
         subject.title.toLocaleLowerCase().indexOf(filterBy) !== -1
     );
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }

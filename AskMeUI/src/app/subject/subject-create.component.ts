@@ -1,18 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { SubjectService } from '../_services/subject.service';
 import { AlertService } from '../_services/alert.service';
+import { Subscription } from 'rxjs';
 
 @Component({ templateUrl: 'subject-create.component.html' })
-export class SubjectCreateComponent implements OnInit {
+export class SubjectCreateComponent implements OnInit, OnDestroy {
   pageTitle = 'Create Subject';
   subjectForm: FormGroup;
   loading = false;
   submitted = false;
-
+  private subscription: Subscription;
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -44,7 +45,7 @@ export class SubjectCreateComponent implements OnInit {
     }
 
     this.loading = true;
-    this.subjectService
+    this.subscription = this.subjectService
       .createSubject(this.subjectForm.value)
       .pipe(first())
       .subscribe(
@@ -57,5 +58,11 @@ export class SubjectCreateComponent implements OnInit {
           this.loading = false;
         }
       );
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }

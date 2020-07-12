@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
@@ -8,15 +8,19 @@ import { LessonService } from '../_services/lesson.service';
 import { ILesson } from '../_models/lesson';
 import { SubjectService } from '../_services/subject.service';
 import { ISubject } from '../_models/subject';
+import { Subscription } from 'rxjs';
 
 @Component({ templateUrl: 'question-create.component.html' })
-export class QuestionCreateComponent implements OnInit {
+export class QuestionCreateComponent implements OnInit, OnDestroy {
   pageTitle = 'Create Question';
   questionForm: FormGroup;
   loading = false;
   submitted = false;
   lessons: ILesson[];
   subjects: ISubject[];
+  private subscription: Subscription;
+  private subscriptionLes: Subscription;
+  private subscriptionSub: Subscription;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -43,15 +47,19 @@ export class QuestionCreateComponent implements OnInit {
 
   getLessons(): void {
     const value = this.questionForm.value.subjectId;
-    this.lessonService.getLessons(value).subscribe((data) => {
-      this.lessons = data;
-    });
+    this.subscriptionLes = this.lessonService
+      .getLessons(value)
+      .subscribe((data) => {
+        this.lessons = data;
+      });
   }
 
   getSubjects(): void {
-    this.subjectService.getSubjects().subscribe((data) => {
-      this.subjects = data;
-    });
+    this.subscriptionSub = this.subjectService
+      .getSubjects()
+      .subscribe((data) => {
+        this.subjects = data;
+      });
   }
 
   onSubmit(): void {
@@ -66,7 +74,7 @@ export class QuestionCreateComponent implements OnInit {
     }
 
     this.loading = true;
-    this.questionService
+    this.subscription = this.questionService
       .createQuestion(this.questionForm.value)
       .pipe(first())
       .subscribe(
@@ -79,5 +87,17 @@ export class QuestionCreateComponent implements OnInit {
           this.loading = false;
         }
       );
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+    if (this.subscriptionLes) {
+      this.subscriptionLes.unsubscribe();
+    }
+    if (this.subscriptionSub) {
+      this.subscriptionSub.unsubscribe();
+    }
   }
 }

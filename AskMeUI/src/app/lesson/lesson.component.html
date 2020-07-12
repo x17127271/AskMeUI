@@ -6,30 +6,42 @@
 </div>
 <div class="row justify-content-center">
     <div class="col-8">
-        <div class="col-4 no-left-padding">
-            <input class="form-control form-control-sm" placeholder="Filter by Title" type="text"
-                [(ngModel)]='listFilter' />
+        <div class="form-group mt-3 mb-5">
+            <label for="subjectId">Select a Subject to display the Lessons</label>
+            <select class="form-control" (change)="loadLessons($event)">
+                <ng-container *ngIf="subjects && subjects.length">
+                    <option value="0">Select a Subject</option>
+                    <option *ngFor="let sub of subjects" value="{{sub.id}}">{{sub.title}}</option>
+                </ng-container>
+            </select>
         </div>
-        <div class="table-responsive table-sm table-striped table-hover mt-1">
-            <table class="table table-bordered" *ngIf="lessons && lessons.length">
-                <caption>List of Lessons</caption>
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Title</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let lesson of filteredLessons">
-                        <td>{{lesson.title | uppercase}}</td>
-                        <td>{{lesson.description}}</td>
-                        <td><a [routerLink]="['/lessons', lesson.id]" class="btn btn-outline-primary btn-sm">Details</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <ng-container *ngIf="lessons && lessons.length">
+            <div class="col-4 no-left-padding mt-5">
+                <input class="form-control form-control-sm" placeholder="Filter by Title" type="text"
+                    [(ngModel)]='listFilter' />
+            </div>
+            <div class="table-responsive table-sm table-striped table-hover mt-1">
+                <table class="table table-bordered">
+                    <caption>List of Lessons</caption>
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Title</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let lesson of filteredLessons">
+                            <td>{{lesson.title}}</td>
+                            <td>{{lesson.description}}</td>
+                            <td><a [routerLink]="['/lessons', lesson.id]"
+                                    class="btn btn-outline-primary btn-sm">Details</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </ng-container>
     </div>
 </div>
 <div class="row justify-content-center mt-3 mb-3">

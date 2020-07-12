@@ -5,7 +5,7 @@ import { ILesson } from '../_models/lesson';
 
 import { AuthenticationService } from '../_services/authentication.service';
 import { throwError, Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, retry } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class LessonService {
@@ -19,20 +19,19 @@ export class LessonService {
   getLessons(subjectId: number): Observable<ILesson[]> {
     return this.http
       .get<ILesson[]>(`${this.apiBaseUrl}/subjects/${subjectId}/lessons`)
-      .pipe(catchError(this.handleError));
+      .pipe(retry(1), catchError(this.handleError));
   }
 
   getLessonById(lessonId: number): Observable<ILesson> {
     return this.http
       .get<ILesson>(`${this.apiBaseUrl}/subjects/${1}/lessons/${lessonId}`)
-      .pipe(catchError(this.handleError));
+      .pipe(retry(1), catchError(this.handleError));
   }
 
   createLesson(lesson: ILesson) {
-    return this.http.post(
-      `${this.apiBaseUrl}/subjects/${lesson.subjectId}/lessons`,
-      lesson
-    );
+    return this.http
+      .post(`${this.apiBaseUrl}/subjects/${lesson.subjectId}/lessons`, lesson)
+      .pipe(retry(1), catchError(this.handleError));
   }
 
   delete(lessonId: number, subjectId: number) {

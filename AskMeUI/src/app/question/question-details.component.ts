@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IQuestion } from '../_models/question';
 import { QuestionService } from '../_services/question.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   templateUrl: './question-details.component.html'
 })
-export class QuestionDetailsComponent implements OnInit {
+export class QuestionDetailsComponent implements OnInit, OnDestroy {
   pageTitle = 'Question Details';
   question: IQuestion;
   errorMessage: string;
   questionId: number;
+  private subscription: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -20,11 +22,19 @@ export class QuestionDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.questionService.getQuestionById(this.questionId).subscribe({
-      next: (question) => {
-        this.question = question;
-      },
-      error: (err) => (this.errorMessage = err)
-    });
+    this.subscription = this.questionService
+      .getQuestionById(this.questionId)
+      .subscribe({
+        next: (question) => {
+          this.question = question;
+        },
+        error: (err) => (this.errorMessage = err)
+      });
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }

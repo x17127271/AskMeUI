@@ -4,4 +4,6 @@ export interface IExam {
   description: string;
   userId: number;
   questions: number[];
+  totalQuestions: number;
+  subjectId: number;
 }

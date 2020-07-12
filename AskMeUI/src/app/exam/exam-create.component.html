@@ -1,26 +1,55 @@
-<h2>Create Exam</h2>
-<form [formGroup]="examForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-        <label for="title">Title</label>
-        <input type="text" formControlName="title" class="form-control"
-            [ngClass]="{ 'is-invalid': submitted && f.title.errors }" />
-        <div *ngIf="submitted && f.title.errors" class="invalid-feedback">
-            <div *ngIf="f.title.errors.required">Title is required</div>
-        </div>
+<div class="row">
+    <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">{{pageTitle}}</h1>
     </div>
-    <div class="form-group">
-        <label for="description">Description</label>
-        <input type="text" formControlName="description" class="form-control"
-            [ngClass]="{ 'is-invalid': submitted && f.description.errors }" />
-        <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
-            <div *ngIf="f.description.errors.required">Description is required</div>
-        </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form [formGroup]="examForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" formControlName="title" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.title.errors }" />
+                <div *ngIf="submitted && f.title.errors" class="invalid-feedback">
+                    <div *ngIf="f.title.errors.required">Title is required</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <input type="text" formControlName="description" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.description.errors }" />
+                <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+                    <div *ngIf="f.description.errors.required">Description is required</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="subjectId">Please select a Subject</label>
+                <select class="form-control" formControlName="subjectId"
+                    [ngClass]="{ 'is-invalid': submitted && f.subjectId.errors }">
+                    <ng-container *ngIf="subjects && subjects.length">
+                        <option *ngFor="let sub of subjects" [ngValue]="sub.id">{{sub.title}}</option>
+                    </ng-container>
+                </select>
+                <div *ngIf="submitted && f.subjectId.errors" class="invalid-feedback">
+                    <div *ngIf="f.subjectId.errors.required">Subject is required</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="totalQuestions">Number of Questions for the exam</label>
+                <input type="number" formControlName="totalQuestions" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.totalQuestions.errors }" />
+                <div *ngIf="submitted && f.totalQuestions.errors" class="invalid-feedback">
+                    <div *ngIf="f.totalQuestions.errors.required">Number of Questions is required</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <button [disabled]="loading" class="btn btn-primary">
+                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                    Create
+                </button>
+                <a [routerLink]="['/exams']" class="btn btn-primary float-right">Cancel</a>
+            </div>
+        </form>
     </div>
-    <div class="form-group">
-        <button [disabled]="loading" class="btn btn-primary">
-            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-            Create
-        </button>
-        <a [routerLink]="['/exams']" class="btn btn-primary float-right">Cancel</a>
-    </div>
-</form>
+</div>

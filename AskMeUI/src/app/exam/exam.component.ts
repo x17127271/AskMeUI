@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ExamService } from '../_services/exam.service';
 import { IExam } from '../_models/exam';
+import { Subscription } from 'rxjs';
 
 @Component({ templateUrl: 'exam.component.html' })
-export class ExamComponent implements OnInit {
-  pageTitle: string = 'Exams';
+export class ExamComponent implements OnInit, OnDestroy {
+  pageTitle = 'Exams';
+  private subscription: Subscription;
 
   _listFilter: string;
   get listFilter(): string {
@@ -24,8 +26,7 @@ export class ExamComponent implements OnInit {
   constructor(private examService: ExamService) {}
 
   ngOnInit() {
-    // pass userId on a proper way to getexams
-    this.examService.getExams(1).subscribe({
+    this.subscription = this.examService.getExams().subscribe({
       next: (exams) => {
         this.exams = exams;
         this.filteredExams = this.exams;
@@ -39,5 +40,11 @@ export class ExamComponent implements OnInit {
     return this.exams.filter(
       (exam: IExam) => exam.title.toLocaleLowerCase().indexOf(filterBy) !== -1
     );
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }
