@@ -34,6 +34,12 @@ export class LessonService {
       .pipe(retry(1), catchError(this.handleError));
   }
 
+  updateLessonById(lesson: ILesson) {
+    return this.http
+      .put(`${this.apiBaseUrl}/subjects/${1}/lessons/${lesson.id}`, lesson)
+      .pipe(retry(1), catchError(this.handleError));
+  }
+
   delete(lessonId: number, subjectId: number) {
     return this.http.delete(
       `${this.apiBaseUrl}subjects/${subjectId}/lessons/${lessonId}`

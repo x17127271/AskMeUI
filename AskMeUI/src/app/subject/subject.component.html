@@ -24,8 +24,12 @@
                     <tr *ngFor="let subject of subjects">
                         <td>{{subject.title}}</td>
                         <td>{{subject.description}}</td>
-                        <td><a [routerLink]="['/subjects', subject.id]"
-                                class="btn btn-outline-primary btn-sm">Details</a></td>
+                        <td>
+                            <a [routerLink]="['/subjects', subject.id]"
+                                class="btn btn-outline-primary btn-sm">Details</a>
+                            <a [routerLink]="['/subjects', subject.id,'edit']"
+                                class="btn btn-outline-primary btn-sm ml-1">Edit</a>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -34,6 +38,6 @@
 </div>
 <div class="row justify-content-center mt-3 mb-3">
     <div class="col-8 mt-3">
-        <a class="btn btn-primary" [routerLink]="['create']">Create Subject</a>
+        <a class="btn btn-primary" [routerLink]="['create']">New Subject</a>
     </div>
 </div>

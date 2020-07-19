@@ -14,6 +14,7 @@ import { AlertComponent } from '../app/_components/alert.component';
 import { SubjectCreateComponent } from '../app/subject/subject-create.component';
 import { SubjectComponent } from '../app/subject/subject.component';
 import { SubjectDetailsComponent } from '../app/subject/subject-details.component';
+import { SubjectEditComponent } from '../app/subject/subject-edit.component';
 import { LessonCreateComponent } from '../app/lesson/lesson-create.component';
 import { LessonComponent } from '../app/lesson/lesson.component';
 import { LessonDetailsComponent } from '../app/lesson/lesson-details.component';
@@ -26,6 +27,7 @@ import { ExamComponent } from '../app/exam/exam.component';
 import { ExamCreateComponent } from '../app/exam/exam-create.component';
 import { ExamDetailsComponent } from '../app/exam/exam-details.component';
 import { ExamShowComponent } from '../app/exam/exam-show.component';
+import { ResultComponent } from '../app/result/result.component';
 
 @NgModule({
   imports: [
@@ -55,7 +57,9 @@ import { ExamShowComponent } from '../app/exam/exam-show.component';
     ExamComponent,
     ExamCreateComponent,
     ExamDetailsComponent,
-    ExamShowComponent
+    ExamShowComponent,
+    ResultComponent,
+    SubjectEditComponent
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

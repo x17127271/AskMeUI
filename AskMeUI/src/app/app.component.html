@@ -3,8 +3,8 @@
   <a class="navbar-brand col-sm-3 col-md-2 mr-0">{{ pageTitle }}</a>
   <ul class="nav navbar-nav navbar-right">
     <li>
-      <a routerLink="login" *ngIf="!currentUser">Login</a>
-      <a class="nav-item nav-link" href="#" *ngIf="currentUser" (click)="logout()">Logout</a>
+      <a class="nav-item nav-link mr-5" routerLink="login" *ngIf="!currentUser">Login</a>
+      <a class="nav-item nav-link mr-5" href="#" *ngIf="currentUser" (click)="logout()">Logout</a>
     </li>
   </ul>
 </nav>
@@ -12,17 +12,20 @@
 <!-- main app container -->
 <div class="container-fluid">
   <div class="row">
-    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-      <div class="sidebar-sticky">
-        <ul class="nav flex-column">
-          <li class="nav-item"><a class="nav-link" [routerLink]="['/home']">Home</a></li>
-          <li class="nav-item"><a class="nav-link" [routerLink]="['/subjects']">Subjects</a></li>
-          <li class="nav-item"><a class="nav-link" [routerLink]="['/lessons']">Lessons</a></li>
-          <li class="nav-item"><a class="nav-link" [routerLink]="['/questions']">Questions</a></li>
-          <li class="nav-item"><a class="nav-link" [routerLink]="['/exams']">Exams</a></li>
-        </ul>
-      </div>
-    </nav>
+    <ng-container *ngIf="currentUser">
+      <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+        <div class="sidebar-sticky">
+          <ul class="nav flex-column">
+            <li class="nav-item"><a class="nav-link" [routerLink]="['/home']">Home</a></li>
+            <li class="nav-item"><a class="nav-link" [routerLink]="['/subjects']">Subjects</a></li>
+            <li class="nav-item"><a class="nav-link" [routerLink]="['/lessons']">Lessons</a></li>
+            <li class="nav-item"><a class="nav-link" [routerLink]="['/questions']">Questions</a></li>
+            <li class="nav-item"><a class="nav-link" [routerLink]="['/exams']">Exams</a></li>
+            <li class="nav-item"><a class="nav-link" [routerLink]="['/results']">Results</a></li>
+          </ul>
+        </div>
+      </nav>
+    </ng-container>
     <main class="col-md-9 ml-sm-auto col-lg-10 px-4" role="main">
       <!-- Content -->
       <router-outlet></router-outlet>

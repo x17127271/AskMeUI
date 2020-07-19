@@ -2,8 +2,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IExam } from '../_models/exam';
 import { ExamService } from '../_services/exam.service';
-import { IQuestion } from '../_models/question';
-import { IAnswer } from '../_models/answer';
 import { IQuestionExam } from '../_models/questionExam';
 import { Subscription } from 'rxjs';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
@@ -18,8 +16,6 @@ import { first } from 'rxjs/operators';
 export class ExamShowComponent implements OnInit, OnDestroy {
   pageTitle = 'Exam';
   examDetails: IExam;
-  //questions: IQuestion[];
-  //answers: IAnswer[];
   errorMessage: string;
   questionsExam: IQuestionExam[];
   examResultForm: FormGroup;
@@ -63,6 +59,7 @@ export class ExamShowComponent implements OnInit, OnDestroy {
       next: (examQuestion) => {
         this.examDetails = examQuestion.exam;
         this.questionsExam = examQuestion.questions;
+        this.questionsExam = this.questionsExam.reverse();
         this.createForm();
       },
       error: (err) => (this.errorMessage = err)

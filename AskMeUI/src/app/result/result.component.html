@@ -1,0 +1,40 @@
+<div class="row">
+    <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">{{pageTitle}}</h1>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div class="form-group mt-3 mb-5">
+            <label>Select a Exam to display the Results</label>
+            <select class="form-control" (change)="loadResults($event)">
+                <ng-container *ngIf="exams && exams.length">
+                    <option value="0">Select a Exam</option>
+                    <option *ngFor="let exam of exams" value="{{exam.id}}">{{exam.title}}</option>
+                </ng-container>
+            </select>
+        </div>
+        <ng-container *ngIf="results && results.length">
+            <div class="table-responsive table-sm table-striped table-hover mt-1">
+                <table class="table table-bordered">
+                    <caption>List of Results</caption>
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">TotalSuccess</th>
+                            <th scope="col">TotalFailed</th>
+                            <th scope="col">TotalQuestions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let result of results">
+                            <td>{{result.totalSuccess}}</td>
+                            <td>{{result.totalFailed}}</td>
+                            <td>{{result.totalSuccess + result.totalFailed}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </ng-container>
+    </div>
+</div>

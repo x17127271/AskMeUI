@@ -17,6 +17,8 @@ import { ExamComponent } from './exam/exam.component';
 import { ExamCreateComponent } from './exam/exam-create.component';
 import { ExamDetailsComponent } from './exam/exam-details.component';
 import { ExamShowComponent } from './exam/exam-show.component';
+import { ResultComponent } from './result/result.component';
+import { SubjectEditComponent } from './subject/subject-edit.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
@@ -35,6 +37,11 @@ const routes: Routes = [
   {
     path: 'subjects/:id',
     component: SubjectDetailsComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'subjects/:id/edit',
+    component: SubjectEditComponent,
     canActivate: [AuthGuard]
   },
   {
@@ -85,6 +92,11 @@ const routes: Routes = [
   {
     path: 'exams/:id/show',
     component: ExamShowComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'results',
+    component: ResultComponent,
     canActivate: [AuthGuard]
   },
 

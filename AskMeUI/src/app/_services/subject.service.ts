@@ -40,6 +40,16 @@ export class SubjectService {
       .pipe(retry(1), catchError(this.handleError));
   }
 
+  updateSubject(subject: ISubject) {
+    subject.userId = this.currentUser.id;
+    return this.http
+      .put(
+        `${this.apiBaseUrl}/users/${this.currentUser.id}/subjects/${subject.id}`,
+        subject
+      )
+      .pipe(retry(1), catchError(this.handleError));
+  }
+
   delete(id: number) {
     return this.http.delete(`${this.apiBaseUrl}/subjects/${id}`);
   }

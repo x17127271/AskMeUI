@@ -6,6 +6,7 @@ import { ExamResult } from '../_models/examResult';
 import { AuthenticationService } from '../_services/authentication.service';
 import { throwError, Observable } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
+import { IResult } from '../_models/result';
 
 @Injectable({ providedIn: 'root' })
 export class ResultService {
@@ -15,6 +16,12 @@ export class ResultService {
   ) {}
   currentUser = this.authenticationService.currentUserValue;
   private apiBaseUrl = 'http://localhost:51044/api';
+
+  getResults(examId: number): Observable<IResult[]> {
+    return this.http
+      .get<IResult[]>(`${this.apiBaseUrl}/exams/${examId}/results`)
+      .pipe(retry(1), catchError(this.handleError));
+  }
 
   processExamResult(examResult: ExamResult[]) {
     console.log(examResult);
