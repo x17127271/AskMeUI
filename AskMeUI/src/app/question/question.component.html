@@ -42,9 +42,13 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let question of filteredQuestions">
-                            <td>{{question.title | uppercase}}</td>
-                            <td><a [routerLink]="['/questions', question.id]"
-                                    class="btn btn-outline-primary btn-sm">Details</a></td>
+                            <td>{{question.title}}</td>
+                            <td>
+                                <a [routerLink]="['/lessons',lessonId,'questions', question.id]"
+                                    class="btn btn-outline-primary btn-sm">Details</a>
+                                <a [routerLink]="['/lessons',lessonId,'questions', question.id, 'edit']"
+                                    class="btn btn-outline-primary btn-sm ml-1">Edit</a>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

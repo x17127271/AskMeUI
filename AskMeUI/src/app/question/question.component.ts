@@ -13,6 +13,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   private subscriptonLes: Subscription;
   private subscriptionSub: Subscription;
+  lessonId: number;
 
   _listFilter: string;
   get listFilter(): string {
@@ -58,10 +59,10 @@ export class QuestionComponent implements OnInit, OnDestroy {
   }
 
   loadQuestions(event: any) {
-    const lessonId = event.target.value;
-    if (lessonId && lessonId > 0) {
+    this.lessonId = event.target.value;
+    if (this.lessonId && this.lessonId > 0) {
       this.subscription = this.questionService
-        .getQuestions(lessonId)
+        .getQuestions(this.lessonId)
         .subscribe({
           next: (questions) => {
             this.questions = questions;

@@ -1,32 +1,29 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ISubject } from '../_models/subject';
-import { SubjectService } from '../_services/subject.service';
 import { Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
-import { ILesson } from '../_models/lesson';
-import { LessonService } from '../_services/lesson.service';
+import { IAnswer } from '../_models/answer';
+import { AnswerService } from '../_services/answer.service';
 
 @Component({
-  templateUrl: './lesson-edit.component.html'
+  templateUrl: './answer-edit.component.html'
 })
-export class LessonEditComponent implements OnInit, OnDestroy {
-  pageTitle = 'Lesson Edit';
-  subject: ISubject;
-  lesson: ILesson;
+export class AnswerEditComponent implements OnInit, OnDestroy {
+  pageTitle = 'Answer Edit';
+  answer: IAnswer;
   errorMessage: string;
   private subscription: Subscription;
   private subscriptionUp: Subscription;
-  lessonForm: FormGroup;
+  answerForm: FormGroup;
   loading = false;
   submitted = false;
+  questionId: number;
 
   constructor(
     private route: ActivatedRoute,
-    private subjectService: SubjectService,
     private formBuilder: FormBuilder,
-    private lessonService: LessonService
+    private answerService: AnswerService
   ) {}
 
   ngOnInit(): void {
@@ -34,43 +31,42 @@ export class LessonEditComponent implements OnInit, OnDestroy {
     this.createForm();
   }
   get f() {
-    return this.lessonForm.controls;
+    return this.answerForm.controls;
   }
 
   createForm(): any {
     // + to cast to number
-    const lessonId = +this.route.snapshot.paramMap.get('lessonid');
-    const subjectId = +this.route.snapshot.paramMap.get('subjectid');
+    this.questionId = +this.route.snapshot.paramMap.get('questionid');
+    const answerId = +this.route.snapshot.paramMap.get('answerid');
     // change this calling service
-    this.subscription = this.lessonService
-      .getLessonById(lessonId, subjectId)
+    this.subscription = this.answerService
+      .getAnswerById(answerId, this.questionId)
       .subscribe({
-        next: (lesson) => {
-          this.lesson = lesson;
-          this.lessonForm = this.formBuilder.group({
-            title: [this.lesson.title, Validators.required],
-            description: [this.lesson.description, Validators.required],
-            id: [lessonId],
-            subjectId: [subjectId]
+        next: (answer) => {
+          this.answer = answer;
+          this.answerForm = this.formBuilder.group({
+            title: [this.answer.title, Validators.required],
+            id: [answerId],
+            questionId: [this.questionId]
           });
         },
         error: (err) => (this.errorMessage = err)
       });
   }
 
-  updateLesson() {
+  updateAnswer() {
     this.submitted = true;
 
     // reset alerts on submit
 
     // stop here if form is invalid
-    if (this.lessonForm.invalid) {
+    if (this.answerForm.invalid) {
       return;
     }
 
     this.loading = true;
-    this.subscriptionUp = this.lessonService
-      .updateLesson(this.lessonForm.value)
+    this.subscriptionUp = this.answerService
+      .updateAnswer(this.answerForm.value)
       .pipe(first())
       .subscribe(
         (data) => {

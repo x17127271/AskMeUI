@@ -15,6 +15,7 @@ export class LessonComponent implements OnInit, OnDestroy {
   _listFilter: string;
   subjects: ISubject[];
   private subscriptionSub: Subscription;
+  subjectId: number;
 
   get listFilter(): string {
     return this._listFilter;
@@ -36,15 +37,17 @@ export class LessonComponent implements OnInit, OnDestroy {
   }
 
   loadLessons(event: any) {
-    const subjectId = event.target.value;
-    if (subjectId && subjectId > 0) {
-      this.subscription = this.lessonService.getLessons(subjectId).subscribe({
-        next: (lessons) => {
-          this.lessons = lessons;
-          this.filteredLessons = this.lessons;
-        },
-        error: (err) => (this.errorMessage = err)
-      });
+    this.subjectId = event.target.value;
+    if (this.subjectId && this.subjectId > 0) {
+      this.subscription = this.lessonService
+        .getLessons(this.subjectId)
+        .subscribe({
+          next: (lessons) => {
+            this.lessons = lessons;
+            this.filteredLessons = this.lessons;
+          },
+          error: (err) => (this.errorMessage = err)
+        });
     }
   }
 

@@ -22,15 +22,26 @@ export class AnswerService {
       .pipe(retry(1), catchError(this.handleError));
   }
 
-  getAnswerById(answerId: number): Observable<IAnswer> {
+  getAnswerById(answerId: number, questionId: number): Observable<IAnswer> {
     return this.http
-      .get<IAnswer>(`${this.apiBaseUrl}/questions/${1}/answers/${answerId}`)
+      .get<IAnswer>(
+        `${this.apiBaseUrl}/questions/${questionId}/answers/${answerId}`
+      )
       .pipe(retry(1), catchError(this.handleError));
   }
 
   createAnswer(answer: IAnswer) {
     return this.http
       .post(`${this.apiBaseUrl}/questions/${answer.questionId}/answers`, answer)
+      .pipe(retry(1), catchError(this.handleError));
+  }
+
+  updateAnswer(answer: IAnswer) {
+    return this.http
+      .put(
+        `${this.apiBaseUrl}/questions/${answer.questionId}/answers/${answer.id}`,
+        answer
+      )
       .pipe(retry(1), catchError(this.handleError));
   }
 

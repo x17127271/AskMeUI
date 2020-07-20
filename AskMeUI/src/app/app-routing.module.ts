@@ -19,6 +19,9 @@ import { ExamDetailsComponent } from './exam/exam-details.component';
 import { ExamShowComponent } from './exam/exam-show.component';
 import { ResultComponent } from './result/result.component';
 import { SubjectEditComponent } from './subject/subject-edit.component';
+import { LessonEditComponent } from './lesson/lesson-edit.component';
+import { QuestionEditComponent } from './question/question-edit.component';
+import { AnswerEditComponent } from './answer/answer-edit.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
@@ -55,8 +58,13 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'lessons/:id',
+    path: 'subjects/:subjectid/lessons/:lessonid',
     component: LessonDetailsComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'subjects/:subjectid/lessons/:lessonid/edit',
+    component: LessonEditComponent,
     canActivate: [AuthGuard]
   },
   {
@@ -70,8 +78,18 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'questions/:id',
+    path: 'questions/:questionid/answers/:answerid/edit',
+    component: AnswerEditComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'lessons/:lessonid/questions/:questionid',
     component: QuestionDetailsComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'lessons/:lessonid/questions/:questionid/edit',
+    component: QuestionEditComponent,
     canActivate: [AuthGuard]
   },
   {

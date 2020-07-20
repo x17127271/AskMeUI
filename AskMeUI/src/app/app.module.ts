@@ -17,12 +17,15 @@ import { SubjectDetailsComponent } from '../app/subject/subject-details.componen
 import { SubjectEditComponent } from '../app/subject/subject-edit.component';
 import { LessonCreateComponent } from '../app/lesson/lesson-create.component';
 import { LessonComponent } from '../app/lesson/lesson.component';
+import { LessonEditComponent } from '../app/lesson/lesson-edit.component';
 import { LessonDetailsComponent } from '../app/lesson/lesson-details.component';
 import { QuestionCreateComponent } from '../app/question/question-create.component';
 import { QuestionComponent } from '../app/question/question.component';
+import { QuestionEditComponent } from '../app/question/question-edit.component';
 import { QuestionDetailsComponent } from '../app/question/question-details.component';
 import { AnswerComponent } from '../app/answer/answer.component';
 import { AnswerCreateComponent } from '../app/answer/answer-create.component';
+import { AnswerEditComponent } from '../app/answer/answer-edit.component';
 import { ExamComponent } from '../app/exam/exam.component';
 import { ExamCreateComponent } from '../app/exam/exam-create.component';
 import { ExamDetailsComponent } from '../app/exam/exam-details.component';
@@ -59,7 +62,10 @@ import { ResultComponent } from '../app/result/result.component';
     ExamDetailsComponent,
     ExamShowComponent,
     ResultComponent,
-    SubjectEditComponent
+    SubjectEditComponent,
+    LessonEditComponent,
+    QuestionEditComponent,
+    AnswerEditComponent
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

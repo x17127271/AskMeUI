@@ -34,8 +34,11 @@
                         <tr *ngFor="let lesson of filteredLessons">
                             <td>{{lesson.title}}</td>
                             <td>{{lesson.description}}</td>
-                            <td><a [routerLink]="['/lessons', lesson.id]"
+                            <td>
+                                <a [routerLink]="['/subjects',subjectId,'lessons', lesson.id]"
                                     class="btn btn-outline-primary btn-sm">Details</a>
+                                <a [routerLink]="['/subjects',subjectId,'lessons', lesson.id,'edit']"
+                                    class="btn btn-outline-primary btn-sm ml-1">Edit</a>
                             </td>
                         </tr>
                     </tbody>

@@ -19,7 +19,10 @@
                     <tr *ngFor="let answer of filteredAnswers">
                         <td>{{answer.title}}</td>
                         <td>{{answer.isAccepted}}</td>
-                        <td></td>
+                        <td>
+                            <a [routerLink]="['/questions',questionId,'answers', answer.id,'edit']"
+                                class="btn btn-outline-primary btn-sm ml-1">Edit</a>
+                        </td>
                     </tr>
                 </tbody>
             </table>

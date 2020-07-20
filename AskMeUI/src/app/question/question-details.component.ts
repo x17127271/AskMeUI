@@ -12,18 +12,20 @@ export class QuestionDetailsComponent implements OnInit, OnDestroy {
   question: IQuestion;
   errorMessage: string;
   questionId: number;
+  lessonId: number;
   private subscription: Subscription;
 
   constructor(
     private route: ActivatedRoute,
     private questionService: QuestionService
   ) {
-    this.questionId = +this.route.snapshot.paramMap.get('id');
+    this.questionId = +this.route.snapshot.paramMap.get('questionid');
+    this.lessonId = +this.route.snapshot.paramMap.get('lessonid');
   }
 
   ngOnInit(): void {
     this.subscription = this.questionService
-      .getQuestionById(this.questionId)
+      .getQuestionById(this.questionId, this.lessonId)
       .subscribe({
         next: (question) => {
           this.question = question;

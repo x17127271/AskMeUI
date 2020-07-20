@@ -22,9 +22,11 @@ export class QuestionService {
       .pipe(retry(1), catchError(this.handleError));
   }
 
-  getQuestionById(questionId: number): Observable<IQuestion> {
+  getQuestionById(questionId: number, lessonId: number): Observable<IQuestion> {
     return this.http
-      .get<IQuestion>(`${this.apiBaseUrl}/lessons/${1}/questions/${questionId}`)
+      .get<IQuestion>(
+        `${this.apiBaseUrl}/lessons/${lessonId}/questions/${questionId}`
+      )
       .pipe(retry(1), catchError(this.handleError));
   }
 
@@ -32,6 +34,15 @@ export class QuestionService {
     return this.http
       .post(
         `${this.apiBaseUrl}/lessons/${question.lessonId}/questions`,
+        question
+      )
+      .pipe(retry(1), catchError(this.handleError));
+  }
+
+  updateQuestion(question: IQuestion) {
+    return this.http
+      .put(
+        `${this.apiBaseUrl}/lessons/${question.lessonId}/questions/${question.id}`,
         question
       )
       .pipe(retry(1), catchError(this.handleError));
