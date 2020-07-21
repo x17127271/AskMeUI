@@ -4,42 +4,39 @@
         <h1 class="h2">Dashboard</h1>
     </div>
 </div>
-
 <div class="row justify-content-center">
     <div class="col-8">
         <form [formGroup]="examResultForm">
-            <div *ngFor="let question of questionsExam; let i=index">
-
-                <div class="form-group" formGroupName="{{'q' + question.id}}">
-                    <label class="control-label"> {{question.id}})
-                        {{question.title}}</label>
-                    <div class="ml-3">
-                        <table>
-                            <tr *ngFor="let anwr of question.answers; let a=index">
-                                <td>{{a+1}}. {{anwr.title}} </td>
-                                <td>
-                                    <div class="custom-checkbox custom-control">
-                                        <input type="checkbox" class="custom-control-input" id="q{{question.id}}_{{a}}"
-                                            value="{{a+1}}" formControlName="{{'a' + anwr.id}}" />
-                                        <label class="custom-control-label" for="q{{question.id}}_{{a}}"></label>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-
+            <div class="card m-3">
+                <h5 class="card-header">{{examDetails.title}}</h5>
+                <div class="card-body">
+                    <div *ngFor="let question of questionsExam; let i=index">
+                        <div class="form-group" formGroupName="{{'q' + question.id}}">
+                            <label class="control-label"> {{i+1}}.
+                                {{question.title}}</label>
+                            <div class="col-12 ml-3">
+                                <div class="row">
+                                    <ng-container *ngFor="let anwr of question.answers; let a=index">
+                                        <div class="custom-checkbox custom-control mr-4">
+                                            <input type="checkbox" class="custom-control-input"
+                                                id="q{{question.id}}_{{a}}" value="{{a+1}}"
+                                                formControlName="{{'a' + anwr.id}}" />
+                                            <label class="custom-control-label"
+                                                for="q{{question.id}}_{{a}}">{{anwr.title}}</label>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="col-md-12">
+                        <button (click)="onSubmit()" class="btn btn-primary">Submit</button>
+                        <a [routerLink]="['/exams']" class="btn btn-primary float-right">Cancel</a>
                     </div>
                 </div>
             </div>
-
-
-
         </form>
-        <div class="row">
-            <div class="col-md-12">
-                <button (click)="onSubmit()" class="btn btn-primary">Submit</button>
-                <a [routerLink]="['/exams']" class="btn btn-primary float-right">Cancel</a>
-
-            </div>
-        </div>
     </div>
 </div>

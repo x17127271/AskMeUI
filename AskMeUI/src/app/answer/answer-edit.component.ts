@@ -47,7 +47,8 @@ export class AnswerEditComponent implements OnInit, OnDestroy {
           this.answerForm = this.formBuilder.group({
             title: [this.answer.title, Validators.required],
             id: [answerId],
-            questionId: [this.questionId]
+            questionId: [this.questionId],
+            isAccepted: [this.answer.isAccepted]
           });
         },
         error: (err) => (this.errorMessage = err)
