@@ -1,19 +1,17 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { ISubject } from '../_models/subject';
-import { SubjectService } from '../_services/subject.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { ILesson } from '../_models/lesson';
 import { LessonService } from '../_services/lesson.service';
+import { AlertService } from '../_services/alert.service';
 
 @Component({
   templateUrl: './lesson-edit.component.html'
 })
 export class LessonEditComponent implements OnInit, OnDestroy {
   pageTitle = 'Lesson Edit';
-  subject: ISubject;
   lesson: ILesson;
   errorMessage: string;
   private subscription: Subscription;
@@ -21,16 +19,17 @@ export class LessonEditComponent implements OnInit, OnDestroy {
   lessonForm: FormGroup;
   loading = false;
   submitted = false;
+  subjectId: number;
 
   constructor(
     private route: ActivatedRoute,
-    private subjectService: SubjectService,
     private formBuilder: FormBuilder,
-    private lessonService: LessonService
+    private lessonService: LessonService,
+    private alertService: AlertService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    // this.subjectForm = this.formBuilder.group({});
     this.createForm();
   }
   get f() {
@@ -38,12 +37,11 @@ export class LessonEditComponent implements OnInit, OnDestroy {
   }
 
   createForm(): any {
-    // + to cast to number
     const lessonId = +this.route.snapshot.paramMap.get('lessonid');
-    const subjectId = +this.route.snapshot.paramMap.get('subjectid');
-    // change this calling service
+    this.subjectId = +this.route.snapshot.paramMap.get('subjectid');
+
     this.subscription = this.lessonService
-      .getLessonById(lessonId, subjectId)
+      .getLessonById(lessonId, this.subjectId)
       .subscribe({
         next: (lesson) => {
           this.lesson = lesson;
@@ -51,7 +49,7 @@ export class LessonEditComponent implements OnInit, OnDestroy {
             title: [this.lesson.title, Validators.required],
             description: [this.lesson.description, Validators.required],
             id: [lessonId],
-            subjectId: [subjectId]
+            subjectId: [this.subjectId]
           });
         },
         error: (err) => (this.errorMessage = err)
@@ -62,7 +60,7 @@ export class LessonEditComponent implements OnInit, OnDestroy {
     this.submitted = true;
 
     // reset alerts on submit
-
+    this.alertService.clear();
     // stop here if form is invalid
     if (this.lessonForm.invalid) {
       return;
@@ -74,11 +72,19 @@ export class LessonEditComponent implements OnInit, OnDestroy {
       .pipe(first())
       .subscribe(
         (data) => {
-          // this.alertService.success('Subject successful created', true);
-          // this.router.navigate(['/subjects']);
+          this.alertService.success('Lesson successful updated.');
+
+          this.router.navigate([
+            '/subjects',
+            this.subjectId,
+            'lessons',
+            this.lesson.id,
+            'edit'
+          ]);
+          this.loading = false;
         },
         (error) => {
-          // this.alertService.error(error);
+          this.alertService.error('Lesson failed on updating.');
           this.loading = false;
         }
       );

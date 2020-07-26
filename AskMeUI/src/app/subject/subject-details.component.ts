@@ -19,9 +19,8 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // + to cast to number
     const id = this.route.snapshot.paramMap.get('id');
-    // change this calling service
+
     this.subscription = this.subjectService.getSubjectById(+id).subscribe({
       next: (subject) => {
         this.subject = subject;

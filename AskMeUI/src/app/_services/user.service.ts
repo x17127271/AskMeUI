@@ -7,6 +7,7 @@ import { User } from '../_models/user';
 export class UserService {
   constructor(private http: HttpClient) {}
   private apiBaseUrl = 'http://localhost:51044/api';
+
   getAll() {
     return this.http.get<User[]>(`${this.apiBaseUrl}/users`);
   }

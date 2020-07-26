@@ -68,10 +68,11 @@ export class LessonCreateComponent implements OnInit, OnDestroy {
       .subscribe(
         (data) => {
           this.alertService.success('Lesson successful created', true);
+          this.loading = false;
           this.router.navigate(['/lessons']);
         },
         (error) => {
-          this.alertService.error(error);
+          this.alertService.error('Lesson failed on creation.');
           this.loading = false;
         }
       );

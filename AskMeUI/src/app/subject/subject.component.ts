@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubjectService } from '../_services/subject.service';
-import { AlertService } from '../_services/alert.service';
 import { ISubject } from '../_models/subject';
 import { Subscription } from 'rxjs';
 
@@ -23,6 +22,7 @@ export class SubjectComponent implements OnInit, OnDestroy {
   subjects: ISubject[];
   errorMessage: string;
   private subscription: Subscription;
+  loading = true;
 
   constructor(private subjectService: SubjectService) {}
 
@@ -31,6 +31,7 @@ export class SubjectComponent implements OnInit, OnDestroy {
       next: (subjects) => {
         this.subjects = subjects;
         this.filteredSubjects = this.subjects;
+        this.loading = false;
       },
       error: (err) => (this.errorMessage = err)
     });

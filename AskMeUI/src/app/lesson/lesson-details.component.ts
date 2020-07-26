@@ -19,12 +19,9 @@ export class LessonDetailsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // + to cast to number
-    console.log(this.route.snapshot.paramMap);
     const lessonId = this.route.snapshot.paramMap.get('lessonid');
     const subjectId = this.route.snapshot.paramMap.get('subjectid');
-    console.log(this.route.snapshot.paramMap);
-    // change this calling service
+
     this.subscription = this.lessonService
       .getLessonById(+lessonId, +subjectId)
       .subscribe({

@@ -69,10 +69,11 @@ export class ExamCreateComponent implements OnInit, OnDestroy {
       .subscribe(
         (data) => {
           this.alertService.success('Exam successful created', true);
+          this.loading = false;
           this.router.navigate(['/exams']);
         },
         (error) => {
-          this.alertService.error(error);
+          this.alertService.error('Exam faile on creation.');
           this.loading = false;
         }
       );

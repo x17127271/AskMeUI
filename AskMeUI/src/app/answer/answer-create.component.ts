@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
@@ -23,7 +23,8 @@ export class AnswerCreateComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private router: Router,
     private answerService: AnswerService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -57,11 +58,11 @@ export class AnswerCreateComponent implements OnInit, OnDestroy {
       .subscribe(
         (data) => {
           this.alertService.success('Answer successful created', true);
-          this.answerForm.reset();
+          this.loading = false;
           window.location.reload();
         },
         (error) => {
-          this.alertService.error(error);
+          this.alertService.error('Answer failed on creation.');
           this.loading = false;
         }
       );

@@ -6,33 +6,36 @@
 </div>
 <div class="row justify-content-center">
     <div class="col-8">
-        <div class="col-4 no-left-padding">
-            <input class="form-control form-control-sm" placeholder="Filter by Title" type="text"
-                [(ngModel)]='listFilter' />
-        </div>
-        <div class="table-responsive table-sm table-striped table-hover mt-1">
-            <table class="table table-bordered" *ngIf="exams && exams.length">
-                <caption>List of Exams</caption>
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Title</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let exam of filteredExams">
-                        <td>{{exam.title | uppercase}}</td>
-                        <td>{{exam.description}}</td>
-                        <td>
-                            <a [routerLink]="['/exams', exam.id]" class="btn btn-outline-primary btn-sm">Details</a>
-                            <a [routerLink]="['/exams', exam.id,'show']"
-                                class="btn btn-outline-primary btn-sm ml-1">Show</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <div *ngIf="loading">Loading Subjects...</div>
+        <ng-container *ngIf="!loading">
+            <div class="col-4 no-left-padding">
+                <input class="form-control form-control-sm" placeholder="Filter by Title" type="text"
+                    [(ngModel)]='listFilter' />
+            </div>
+            <div class="table-responsive table-sm table-striped table-hover mt-1">
+                <table class="table table-bordered" *ngIf="exams && exams.length">
+                    <caption>List of Exams</caption>
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Title</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let exam of filteredExams">
+                            <td>{{exam.title | uppercase}}</td>
+                            <td>{{exam.description}}</td>
+                            <td>
+                                <a [routerLink]="['/exams', exam.id]" class="btn btn-outline-primary btn-sm">Details</a>
+                                <a [routerLink]="['/exams', exam.id,'show']"
+                                    class="btn btn-outline-primary btn-sm ml-1">Show</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </ng-container>
     </div>
 </div>
 <div class="row justify-content-center mt-3 mb-3">

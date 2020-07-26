@@ -5,6 +5,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { IAnswer } from '../_models/answer';
 import { AnswerService } from '../_services/answer.service';
+import { AlertService } from '../_services/alert.service';
 
 @Component({
   templateUrl: './answer-edit.component.html'
@@ -23,11 +24,11 @@ export class AnswerEditComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private answerService: AnswerService
+    private answerService: AnswerService,
+    private alertService: AlertService
   ) {}
 
   ngOnInit(): void {
-    // this.subjectForm = this.formBuilder.group({});
     this.createForm();
   }
   get f() {
@@ -35,10 +36,9 @@ export class AnswerEditComponent implements OnInit, OnDestroy {
   }
 
   createForm(): any {
-    // + to cast to number
     this.questionId = +this.route.snapshot.paramMap.get('questionid');
     const answerId = +this.route.snapshot.paramMap.get('answerid');
-    // change this calling service
+
     this.subscription = this.answerService
       .getAnswerById(answerId, this.questionId)
       .subscribe({
@@ -59,7 +59,7 @@ export class AnswerEditComponent implements OnInit, OnDestroy {
     this.submitted = true;
 
     // reset alerts on submit
-
+    this.alertService.clear();
     // stop here if form is invalid
     if (this.answerForm.invalid) {
       return;
@@ -71,11 +71,12 @@ export class AnswerEditComponent implements OnInit, OnDestroy {
       .pipe(first())
       .subscribe(
         (data) => {
-          // this.alertService.success('Subject successful created', true);
-          // this.router.navigate(['/subjects']);
+          this.alertService.success('Answer successful updated.');
+          this.loading = false;
+          this.createForm();
         },
         (error) => {
-          // this.alertService.error(error);
+          this.alertService.error('Answer failed to update.');
           this.loading = false;
         }
       );

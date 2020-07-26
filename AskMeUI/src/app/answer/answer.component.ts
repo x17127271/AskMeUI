@@ -29,7 +29,6 @@ export class AnswerComponent implements OnInit, OnDestroy {
   constructor(private answerService: AnswerService) {}
 
   ngOnInit() {
-    // pass questionId on a prope way to getanswers
     this.subscription = this.answerService
       .getAnswers(this.questionId)
       .subscribe({

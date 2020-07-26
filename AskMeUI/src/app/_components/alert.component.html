@@ -1,1 +1,8 @@
-<div *ngIf="message">{{message.text}}</div>
+<div [ngClass]="
+  {
+    'alert alert-success': messageSuccess,
+    'alert alert-danger': !messageSuccess
+  }" *ngIf="message" role="alert" style="text-align: center;
+  padding: 5px;">
+    {{message.text}}
+</div>

@@ -22,6 +22,7 @@ export class ExamComponent implements OnInit, OnDestroy {
   filteredExams: IExam[];
   exams: IExam[];
   errorMessage: string;
+  loading = true;
 
   constructor(private examService: ExamService) {}
 
@@ -30,6 +31,7 @@ export class ExamComponent implements OnInit, OnDestroy {
       next: (exams) => {
         this.exams = exams;
         this.filteredExams = this.exams;
+        this.loading = false;
       },
       error: (err) => (this.errorMessage = err)
     });

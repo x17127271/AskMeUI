@@ -51,10 +51,11 @@ export class SubjectCreateComponent implements OnInit, OnDestroy {
       .subscribe(
         (data) => {
           this.alertService.success('Subject successful created', true);
+          this.loading = false;
           this.router.navigate(['/subjects']);
         },
         (error) => {
-          this.alertService.error(error);
+          this.alertService.error('Subject failed on creation.');
           this.loading = false;
         }
       );

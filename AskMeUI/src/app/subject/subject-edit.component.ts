@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ISubject } from '../_models/subject';
 import { SubjectService } from '../_services/subject.service';
 import { Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
+import { AlertService } from '../_services/alert.service';
 
 @Component({
   templateUrl: './subject-edit.component.html'
@@ -22,11 +23,12 @@ export class SubjectEditComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private subjectService: SubjectService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private alertService: AlertService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    // this.subjectForm = this.formBuilder.group({});
     this.createForm();
   }
   get f() {
@@ -34,9 +36,8 @@ export class SubjectEditComponent implements OnInit, OnDestroy {
   }
 
   createForm(): any {
-    // + to cast to number
     const subjectId = +this.route.snapshot.paramMap.get('id');
-    // change this calling service
+
     this.subscription = this.subjectService
       .getSubjectById(subjectId)
       .subscribe({
@@ -56,7 +57,7 @@ export class SubjectEditComponent implements OnInit, OnDestroy {
     this.submitted = true;
 
     // reset alerts on submit
-
+    this.alertService.clear();
     // stop here if form is invalid
     if (this.subjectForm.invalid) {
       return;
@@ -68,11 +69,12 @@ export class SubjectEditComponent implements OnInit, OnDestroy {
       .pipe(first())
       .subscribe(
         (data) => {
-          // this.alertService.success('Subject successful created', true);
-          // this.router.navigate(['/subjects']);
+          this.alertService.success('Subject successful updated.');
+          this.loading = false;
+          this.router.navigate(['/subjects', this.subject.id, 'edit']);
         },
         (error) => {
-          // this.alertService.error(error);
+          this.alertService.error('Subject failed on update.');
           this.loading = false;
         }
       );

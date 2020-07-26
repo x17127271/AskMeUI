@@ -80,10 +80,11 @@ export class QuestionCreateComponent implements OnInit, OnDestroy {
       .subscribe(
         (data) => {
           this.alertService.success('Question successful created', true);
+          this.loading = false;
           this.router.navigate(['/questions']);
         },
         (error) => {
-          this.alertService.error(error);
+          this.alertService.error('Question failed on creation.');
           this.loading = false;
         }
       );

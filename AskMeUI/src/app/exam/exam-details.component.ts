@@ -20,9 +20,8 @@ export class ExamDetailsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // + to cast to number
     const id = this.route.snapshot.paramMap.get('id');
-    // change this calling service
+
     this.subscription = this.examService.getExamById(+id).subscribe({
       next: (exam) => {
         this.exam = exam;

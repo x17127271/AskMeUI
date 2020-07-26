@@ -13,6 +13,7 @@ export class ExamService {
   ) {}
 
   private apiBaseUrl = 'http://localhost:51044/api';
+
   currentUser = this.authenticationService.currentUserValue;
 
   getExams(): Observable<IExam[]> {

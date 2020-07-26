@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IExam } from '../_models/exam';
 import { ExamService } from '../_services/exam.service';
 import { IQuestionExam } from '../_models/questionExam';
@@ -29,7 +29,8 @@ export class ExamShowComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private examService: ExamService,
     private formBuilder: FormBuilder,
-    private resultService: ResultService
+    private resultService: ResultService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -96,16 +97,14 @@ export class ExamShowComponent implements OnInit, OnDestroy {
         answerRes.answerValue = aValue;
         result.answers.push(answerRes);
       });
-      console.log(result);
       this.examResult.push(result);
-      console.log(this.examResult);
     });
 
     this.subscriptionRes = this.resultService
       .processExamResult(this.examResult)
       .pipe(first())
       .subscribe((data) => {
-        console.log(data);
+        this.router.navigate(['/results']);
       });
   }
 
